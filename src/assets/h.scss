@@ -1,0 +1,27 @@
+// H micro framework.
+html, input {
+  background-color: #f1f5f8;
+}
+
+.h-btn {
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-size:17px;
+  font-weight:bold;
+  padding: 9px 12px;
+  text-decoration:none;
+  transition: box-shadow 500ms;
+  border: none;
+  border-radius: 27px;
+
+  &.delete {
+    color: #ccc;
+    padding: 7px 10px;
+    transition: background-color 500ms, color 500ms;
+    &:hover {
+      background-color: #ccc;
+      color: #aaa;
+    }
+  }
+}
