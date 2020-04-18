@@ -10,22 +10,28 @@
 <script>
 import timer from './components/timer.vue'
 import tinycolor from 'tinycolor2'
+import {store} from './store'
 
 export default {
   name: 'App',
   components: {
     timer
   },
-  data: function() {
+  data() {
     return {
-      timers : [1],
       primaryColors : ['#663399', '#2abb9b', '#f2784b', '#00b5cc']
     };
+  },
+  computed: {
+    timers() {
+      return store.state.timers
+    }
   },
   methods: {
 
     addTimer() {
-      this.timers.push(this.timers.length+1)
+      const newId = (this.timers.length !== 0)?+this.timers[this.timers.length-1]+1:1
+      store.commit('increment', newId)
     },
 
     setPrimaryColor() {

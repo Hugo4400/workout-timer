@@ -16,26 +16,28 @@
 </template>
 
 <script>
-export default {
-  name: 'timer',
-  props: {
-    id: Number
-  },
-  data: function () {
-    return {
-      title : "Timer "+this.id,
-    }
-  },
-  methods: {
-    deleteTimer() {
-      this.$destroy();
-      this.$el.parentNode.removeChild(this.$el);
-    },
-    start() {
 
+  import {store} from '../store';
+
+  export default {
+    name: 'timer',
+    props: {
+      id: Number
+    },
+    data: function () {
+      return {
+        title : "Timer "+this.id,
+      }
+    },
+    methods: {
+      deleteTimer() {
+        store.commit('decrement', this.id)
+      },
+      start() {
+
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
