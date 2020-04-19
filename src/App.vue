@@ -3,7 +3,11 @@
     <div id="timerList">
       <timer v-for="i in timers" v-bind:key="i" :id="i" />
     </div>
+    <br>
     <button id="addTimer" @click="addTimer()" class="h-btn action">Add timer&nbsp;&nbsp;&nbsp;<font-awesome-icon icon="plus"></font-awesome-icon></button>
+    <h1 v-if="done">
+      DONE !
+    </h1>
   </div>
 </template>
 
@@ -25,6 +29,9 @@ export default {
   computed: {
     timers() {
       return store.state.timers
+    },
+    done() {
+      return store.state.done
     }
   },
   methods: {
