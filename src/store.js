@@ -13,6 +13,9 @@ export const store = new Vuex.Store({
         done: false
     },
     mutations: {
+        load (state, timers) {
+            state.timers = timers
+        },
         increment (state, id) {
             state.timers.push(id)
         },

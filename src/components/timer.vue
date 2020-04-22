@@ -1,10 +1,10 @@
 <template>
   <div class="timer">
-    <input type="text" :placeholder="title" ref="title" id="title"/><br>
+    <input type="text" :placeholder="title" ref="title" id="title" @change="save()" /><br>
     <span class="timernbs">
-      <input id="hours" class="timerInt" type="number" max="23" placeholder="hours  " v-model="hours" />:
-      <input id="minutes" class="timerInt" type="number" max="59" placeholder="minutes  " v-model="minutes" />:
-      <input id="seconds" class="timerInt" type="number" max="59" placeholder="seconds  " v-model="seconds" />
+      <input id="hours" class="timerInt" type="number" max="23" placeholder="hours  " v-model="hours" @change="save()" />:
+      <input id="minutes" class="timerInt" type="number" max="59" placeholder="minutes  " v-model="minutes" @change="save()" />:
+      <input id="seconds" class="timerInt" type="number" max="59" placeholder="seconds  " v-model="seconds" @change="save()" />
       <button @click="start()" class="h-btn action" ref="startBtn" v-if="!isActive">
         <font-awesome-icon icon="play"></font-awesome-icon>
       </button>
@@ -20,7 +20,8 @@
 
 <script>
 
-  import {store} from '../store';
+  import {store} from '@/store';
+  import debounce from 'lodash.debounce'
 
   export default {
     name: 'timer',
@@ -33,7 +34,8 @@
         hours : '',
         minutes : '',
         seconds : '',
-        running : false
+        running : false,
+        save : false
       }
     },
     computed: {
@@ -50,6 +52,13 @@
     },
     methods: {
       deleteTimer() {
+        let timers = localStorage.getItem('timers')
+
+        if (timers !== null) {
+          timers = JSON.parse(timers).filter(t => t !== this.id)
+          localStorage.setItem('timers', JSON.stringify(timers))
+        }
+
         store.commit('decrement', this.id)
       },
       start() {
@@ -97,8 +106,46 @@
         store.commit('timerDone', this.id)
       }
     },
+    created() {
+      this.save = debounce(() => {
+
+        let timers = localStorage.getItem('timers')
+
+        if (timers === null) {
+          timers = [];
+        } else {
+          timers = JSON.parse(timers)
+        }
+
+        timers[this.id] = {
+          'title' : this.$refs.title.value,
+          'h' : this.hours,
+          'm' : this.minutes,
+          's' : this.seconds
+        }
+        localStorage.setItem('timers', JSON.stringify(timers))
+      }, 300, {'leading': false, 'trailing': true})
+    },
     mounted() {
-      this.$refs.title.focus();
+
+      let timers = localStorage.getItem('timers')
+
+      if (typeof timers !== 'undefined' && timers !== null) {
+
+        timers = JSON.parse(timers)
+        const timer = timers[this.id]
+
+        if (typeof timer !== "undefined" && timer !== '') {
+          this.title = timer.title
+          this.$refs.title.value = timer.title
+          this.hours = timer.h
+          this.minutes = timer.m
+          this.seconds = timer.s
+        }
+
+      } else {
+        this.$refs.title.focus();
+      }
     }
   }
 </script>

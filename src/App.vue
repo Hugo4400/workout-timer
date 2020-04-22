@@ -15,6 +15,7 @@
 import timer from './components/timer.vue'
 import tinycolor from 'tinycolor2'
 import {store} from './store'
+import keys from 'lodash.keys'
 
 export default {
   name: 'App',
@@ -62,6 +63,11 @@ export default {
   },
   mounted() {
     this.setPrimaryColor();
+    let timers = localStorage.getItem('timers')
+
+    if (timers !== null) {
+      store.commit('load', keys(JSON.parse(timers)).map(Number))
+    }
   }
 }
 </script>
