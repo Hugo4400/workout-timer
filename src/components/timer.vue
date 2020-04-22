@@ -112,7 +112,7 @@
         let timers = localStorage.getItem('timers')
 
         if (timers === null) {
-          timers = [];
+          timers = {}
         } else {
           timers = JSON.parse(timers)
         }
