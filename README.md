@@ -1,24 +1,12 @@
-# workout-timer
+# A simple workout timer based in VueJS
 
-## Project setup
-```
-npm install
-```
+A demo can be found on [hugo-timer.now.sh](hugo-timer.now.sh).
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Installation
+Use `npm install` to install all dependencies.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Development
+Use `npm run serve` to run a local development server.
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Production
+Use `npm run buil` to commpile and minify to the dist folder.
