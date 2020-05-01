@@ -2,9 +2,9 @@
   <div class="timer">
     <input type="text" :placeholder="title" ref="title" id="title" @change="save()" /><br>
     <span class="timernbs">
-      <input id="hours" class="timerInt" type="number" max="23" placeholder="hours  " v-model="hours" @change="save()" />:
-      <input id="minutes" class="timerInt" type="number" max="59" placeholder="minutes  " v-model="minutes" @change="save()" />:
-      <input id="seconds" class="timerInt" type="number" max="59" placeholder="seconds  " v-model="seconds" @change="save()" />
+      <input id="hours" class="timerInt" type="number" max="23" placeholder="hours  " v-model="hours" @change="save()" :disabled="isActive" />:
+      <input id="minutes" class="timerInt" type="number" max="59" placeholder="minutes  " v-model="minutes" @change="save()" :disabled="isActive" />:
+      <input id="seconds" class="timerInt" type="number" max="59" placeholder="seconds  " v-model="seconds" @change="save()" :disabled="isActive" />
       <button @click="start()" class="h-btn action" ref="startBtn" v-if="!isActive">
         <font-awesome-icon icon="play"></font-awesome-icon>
       </button>
