@@ -14,6 +14,9 @@
       <button @click="deleteTimer()" class="h-btn delete">
         <font-awesome-icon icon="minus"></font-awesome-icon>
       </button>
+      <button @click="reset()" class="h-btn delete" v-if="resetButton && !isActive">
+        <font-awesome-icon icon="redo-alt"></font-awesome-icon>
+      </button>
     </span>
   </div>
 </template>
@@ -35,7 +38,11 @@
         minutes : '',
         seconds : '',
         running : false,
-        save : false
+        resetButton : false,
+        save : false,
+        hoursSet : '',
+        minutesSet : '',
+        secondsSet : ''
       }
     },
     computed: {
@@ -48,7 +55,22 @@
         if (val && !this.running) {
           this.start()
         }
-      }
+      },
+      hours(val) {
+        if (!this.running) {
+          this.hoursSet = val
+        }
+      },
+      minutes(val) {
+        if (!this.running) {
+          this.minutesSet = val
+        }
+      },
+      seconds(val) {
+        if (!this.running) {
+          this.secondsSet = val
+        }
+      },
     },
     methods: {
       deleteTimer() {
@@ -64,6 +86,8 @@
       start() {
 
         this.running = true
+        this.resetButton = false
+
         store.commit('setActive', this.id)
         store.commit('setFocus', this.id)
 
@@ -93,15 +117,28 @@
         }, 1000)
 
         store.commit('startTimer', fn)
-
+      },
+      reset() {
+        this.resetButton = false
+        this.hours = this.hoursSet
+        this.minutes = this.minutesSet
+        this.seconds = this.secondsSet
       },
       stop() {
         this.running = false
+        this.resetButton = true
+
         store.commit('deactivate')
         store.commit('stopTimer', store.state.timerFunction)
       },
       done() {
         this.running = false
+        this.resetButton = false
+
+        this.hours = this.hoursSet
+        this.minutes = this.minutesSet
+        this.seconds = this.secondsSet
+
         store.commit('stopTimer', store.state.timerFunction)
         store.commit('timerDone', this.id)
       }
@@ -124,6 +161,7 @@
           's' : this.seconds
         }
         localStorage.setItem('timers', JSON.stringify(timers))
+
       }, 300, {'leading': false, 'trailing': true})
     },
     mounted() {
@@ -141,6 +179,9 @@
           this.hours = timer.h
           this.minutes = timer.m
           this.seconds = timer.s
+          this.hoursSet = timer.h
+          this.minutesSet = timer.m
+          this.secondsSet = timer.s
         }
 
       } else {
