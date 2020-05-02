@@ -32,7 +32,11 @@ export default {
       return store.state.timers
     },
     done() {
-      return store.state.done
+      const done = store.state.done
+      if (done) {
+        new Audio('https://freesound.org/people/original_sound/sounds/366104/download/366104__original-sound__confirmation-downward.wav').play()
+      }
+      return done;
     }
   },
   methods: {

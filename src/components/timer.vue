@@ -53,6 +53,7 @@
     watch: {
       isActive(val) {
         if (val && !this.running) {
+          new Audio('https://freesound.org/people/andersmg/sounds/511492/download/511492__andersmg__double-beep.wav').play()
           this.start()
         }
       },
