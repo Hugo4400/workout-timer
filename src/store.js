@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
         timerFunction: false,
         active: '',
         focus: '',
-        done: false
+        done: false,
+        reps: 0
     },
     mutations: {
         load (state, timers) {
@@ -47,12 +48,30 @@ export const store = new Vuex.Store({
             state.focus = undefined
         },
         timerDone (state, id) {
-            const next = state.timers[state.timers.indexOf(id)+1]
+            let next = state.timers[state.timers.indexOf(id)+1]
             if (typeof next === "undefined") {
-                state.done = true
+
+                if (state.reps > 0) {
+                    state.reps--
+                    next = state.timers.find(x=>x!==undefined)
+                } else {
+                    state.done = true
+                }
             }
             state.active = next
             state.focus = next
+        },
+        setReps (state, reps) {
+            state.reps = reps
+            localStorage.setItem('reps', reps)
+        },
+        addRep (state) {
+            state.reps++
+            localStorage.setItem('reps', state.reps)
+        },
+        removeRep (state) {
+            state.reps--
+            localStorage.setItem('reps', state.reps)
         }
     }
 })

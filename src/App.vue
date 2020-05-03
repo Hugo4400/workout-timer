@@ -5,6 +5,11 @@
     </div>
     <br>
     <button id="addTimer" @click="addTimer()" class="h-btn action">Add timer&nbsp;&nbsp;&nbsp;<font-awesome-icon icon="plus"></font-awesome-icon></button>
+    <div class="repCounter">
+      <button id="removeRep" class="h-btn delete" @click="removeRep"><font-awesome-icon icon="minus"></font-awesome-icon></button>
+      <input id="repNumber" type="number" v-model="reps">
+      <button id="addRep" class="h-btn delete" @click="addRep"><font-awesome-icon icon="plus"></font-awesome-icon></button>
+    </div>
     <h1 v-if="done">
       DONE !
     </h1>
@@ -37,6 +42,14 @@ export default {
         new Audio('https://freesound.org/people/original_sound/sounds/366104/download/366104__original-sound__confirmation-downward.wav').play()
       }
       return done;
+    },
+    reps: {
+      get() {
+        return store.state.reps
+      },
+      set(reps) {
+        store.commit('setReps', reps)
+      }
     }
   },
   methods: {
@@ -46,6 +59,14 @@ export default {
       store.commit('increment', newId)
     },
 
+    addRep() {
+      store.commit('addRep')
+    },
+
+    removeRep() {
+      store.commit('removeRep')
+    },
+
     setPrimaryColor() {
       const primaryColor = this.primaryColors[Math.floor(Math.random()*this.primaryColors.length)]
 
@@ -53,7 +74,8 @@ export default {
               '.h-btn.action { background-color: '+primaryColor+'; } ' +
               '.h-btn.action:hover{ box-shadow: 3px 4px 0 0 '+tinycolor(primaryColor).darken(20).toString()+'; }' +
               '.timer #title { color: '+tinycolor(primaryColor).lighten(10).toString()+'; }' +
-              '.timer .timerInt { color: '+primaryColor+'; }';
+              '.timer .timerInt { color: '+primaryColor+'; }' +
+              '#repNumber { color: '+primaryColor+'; }';
       let style = document.createElement('style');
 
       if (style.styleSheet) {
@@ -67,10 +89,15 @@ export default {
   },
   mounted() {
     this.setPrimaryColor();
-    let timers = localStorage.getItem('timers')
+    const timers = localStorage.getItem('timers')
 
     if (timers !== null) {
       store.commit('load', keys(JSON.parse(timers)).map(Number))
+    }
+
+    const reps = localStorage.getItem('reps')
+    if (reps !== null) {
+      store.commit('setReps', reps)
     }
   }
 }
