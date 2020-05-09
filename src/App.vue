@@ -29,7 +29,8 @@ export default {
   },
   data() {
     return {
-      primaryColors : ['#663399', '#2abb9b', '#f2784b', '#00b5cc']
+      primaryColors : ['#663399', '#2abb9b', '#f2784b', '#00b5cc'],
+      doneSound : new Audio(require('@/assets/timer-done.wav'))
     };
   },
   computed: {
@@ -39,7 +40,7 @@ export default {
     done() {
       const done = store.state.done
       if (done) {
-        new Audio('https://freesound.org/people/original_sound/sounds/366104/download/366104__original-sound__confirmation-downward.wav').play()
+        this.doneSound.play()
       }
       return done;
     },

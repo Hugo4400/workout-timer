@@ -42,7 +42,9 @@
         save : false,
         hoursSet : '',
         minutesSet : '',
-        secondsSet : ''
+        secondsSet : '',
+        nextSound : new Audio(require('@/assets/timer-next.wav')),
+        countSound : new Audio(require('@/assets/timer-count.wav'))
       }
     },
     computed: {
@@ -53,7 +55,7 @@
     watch: {
       isActive(val) {
         if (val && !this.running) {
-          new Audio('https://freesound.org/people/andersmg/sounds/511492/download/511492__andersmg__double-beep.wav').play()
+          this.nextSound.play()
           this.start()
         }
       },
@@ -106,6 +108,10 @@
           if (time === 0) {
             this.done()
           } else {
+
+            if (time === 3000 || time === 2000 || time === 1000) {
+              this.countSound.play()
+            }
 
             time = ((now + time) - now) - 1000;
 
