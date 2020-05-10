@@ -13,6 +13,9 @@
     <h1 v-if="done">
       DONE !
     </h1>
+    <div id="linkButtonContainer">
+      <button id="linkButton" class="h-btn delete" @click="genLink"><font-awesome-icon icon="link"></font-awesome-icon></button>
+    </div>
   </div>
 </template>
 
@@ -21,11 +24,12 @@ import timer from './components/timer.vue'
 import tinycolor from 'tinycolor2'
 import {store} from './store'
 import keys from 'lodash.keys'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'App',
   components: {
-    timer
+    timer,
   },
   data() {
     return {
@@ -85,18 +89,77 @@ export default {
         style.appendChild(document.createTextNode(css));
       }
       document.getElementsByTagName('head')[0].appendChild(style);
+    },
+
+    genLink() {
+
+      let timers = localStorage.getItem('timers')
+      if (timers !== null) {
+        timers = JSON.parse(timers)
+      }
+      const reps = JSON.parse(localStorage.getItem('reps'))
+
+      const link = window.location.origin + '/' + btoa(JSON.stringify({timers: timers, reps: reps}));
+
+      const clipboard = navigator.clipboard;
+      if (typeof clipboard === "undefined") {
+        Swal.fire({
+          icon: 'success',
+          text: link,
+          showConfirmButton: false
+        })
+      } else {
+        navigator.clipboard.writeText(link).then(function () {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Link copied',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }, function () {
+          Swal.fire({
+            icon: 'success',
+            text: link,
+            showConfirmButton: false
+          })
+        });
+      }
     }
 
   },
   mounted() {
     this.setPrimaryColor();
-    const timers = localStorage.getItem('timers')
+
+    let timers = null
+    let reps = null
+
+    let encodedTimer = window.location.pathname.split('/')[1];
+    if (encodedTimer !== "") {
+
+      try {
+        encodedTimer = JSON.parse(atob(encodedTimer));
+        timers = JSON.stringify(encodedTimer.timers)
+        reps = JSON.stringify(encodedTimer.reps)
+      } catch(e) {
+        timers = null
+        reps = null
+      }
+
+    }
+
+    if (timers === null && reps === null) {
+      timers = localStorage.getItem('timers')
+      reps = localStorage.getItem('reps')
+    } else {
+      localStorage.setItem('timers', timers)
+      localStorage.setItem('reps', reps)
+    }
 
     if (timers !== null) {
       store.commit('load', keys(JSON.parse(timers)).map(Number))
     }
 
-    const reps = localStorage.getItem('reps')
     if (reps !== null) {
       store.commit('setReps', reps)
     }

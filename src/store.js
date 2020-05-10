@@ -21,6 +21,18 @@ export const store = new Vuex.Store({
             state.timers.push(id)
         },
         decrement (state, id) {
+            if (typeof state.timers === 'object') {
+
+                let tmp = [];
+
+                for (let timer in state.timers) {
+                    // eslint-disable-next-line no-prototype-builtins
+                    if (state.timers.hasOwnProperty(timer)) {
+                        tmp.push(timer);
+                    }
+                }
+                state.timers = tmp
+            }
             state.timers = state.timers.filter(t => t !== id)
         },
         startTimer (state, interval) {
