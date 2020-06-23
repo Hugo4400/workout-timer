@@ -80,11 +80,23 @@
         let timers = localStorage.getItem('timers')
 
         if (timers !== null) {
-          timers = JSON.parse(timers).filter(t => t !== this.id)
-          localStorage.setItem('timers', JSON.stringify(timers))
+          timers = JSON.parse(timers);
+          let filteredTimers = {}, key;
+          for (key in timers) {
+            if (Object.prototype.hasOwnProperty.call(timers,key) && +key !== this.id) {
+              filteredTimers[+key] = timers[key];
+            }
+          }
+          localStorage.setItem('timers', JSON.stringify(filteredTimers))
         }
 
         store.commit('decrement', this.id)
+
+        // destroy the vue listeners, etc
+        this.$destroy();
+
+        // remove the element from the DOM
+        this.$el.parentNode.removeChild(this.$el);
       },
       start() {
 
