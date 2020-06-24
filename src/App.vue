@@ -171,6 +171,9 @@ export default {
 
   @import "~normalize.css";
   @import "./assets/h.scss";
+  @import "~include-media/dist/include-media";
+
+  $breakpoints: (phone: 320px, tablet: 768px, desktop: 1024px);
 
   #app {
     text-align: center;
@@ -195,6 +198,15 @@ export default {
       font-size: 24px;
       width: 100px;
       text-align: right;
+
+      /* Inclusive and exclusive operators for a finer control over the intervals */
+      @include media(">phone", "<=tablet") {
+        width: 80px;
+      }
+      /* Use ligatured operators if you fancy a slicker declaration */
+      @include media("<phone") {
+        width: 70px;
+      }
     }
   }
 </style>
