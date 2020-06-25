@@ -6,15 +6,15 @@
     <br>
     <button id="addTimer" @click="addTimer()" class="h-btn action">Add timer&nbsp;&nbsp;&nbsp;<font-awesome-icon icon="plus"></font-awesome-icon></button>
     <div class="repCounter">
-      <button id="removeRep" class="h-btn delete" @click="removeRep"><font-awesome-icon icon="minus"></font-awesome-icon></button>
+      <button id="removeRep" class="h-btn delete" @click="removeRep" title="Click here to remove a rep!"><font-awesome-icon icon="minus"></font-awesome-icon></button>
       <input id="repNumber" type="number" v-model="reps">
-      <button id="addRep" class="h-btn delete" @click="addRep"><font-awesome-icon icon="plus"></font-awesome-icon></button>
+      <button id="addRep" class="h-btn delete" @click="addRep" title="Click here to add a rep!"><font-awesome-icon icon="plus"></font-awesome-icon></button>
     </div>
     <h1 v-if="done">
       DONE !
     </h1>
     <div id="linkButtonContainer">
-      <button id="linkButton" class="h-btn delete" @click="genLink"><font-awesome-icon icon="link"></font-awesome-icon></button>
+      <button id="linkButton" class="h-btn delete" @click="genLink" title="Click here to generate a sharable link!"><font-awesome-icon icon="link"></font-awesome-icon></button>
     </div>
   </div>
 </template>
